@@ -1,0 +1,30 @@
+1. Folder Structure
+
+HIA-Project/
+│
+├── static/
+│   └── (your CSS/JS/images)
+│
+├── templates/
+│   │ 
+│   └── views
+│   │   ├── index.html
+│   │   ├── About.html
+│   └── components
+│       ├── navbar.html
+│       ├── sidebar.html
+│       ├── footer.html
+│       ├── re-loader.html
+│       └── flash.html
+│
+├── run.py
+├── app.py
+├── requirements.txt
+
+
+2. Install flask in to your project directory -  " pip install flask "
+
+3. Run app.py using Code runner, run button in vscode 
+
+4. ' app.py ', ' requirements.txt ' and Modules are main server files and Directories ( do not chage it for frontend development )
+
