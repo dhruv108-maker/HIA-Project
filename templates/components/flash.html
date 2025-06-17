@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Components/alert.css') }}">
+<div class="alert-container" id="alert-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    <span class="alert-message">{{ message }}</span>
+                    <button class="alert-close" onclick="this.parentElement.style.display='none';">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+<script src="{{ url_for('static', filename='js/alert.js') }}"></script>

@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Components/sidebar.css') }}">
+
+<div class="sidebar" id="sidebar">
+  <!-- Toggle Button -->
+  <div id="close-toggle">
+    <img src="{{ url_for('static', filename='images/arrow.png') }}" alt="Toggle Sidebar" class="logo">
+  </div>
+
+  <!-- Profile Picture -->
+  <img src="{{ url_for('static', filename='images/user.png') }}" alt="Profile Photo" class="profile-pic">
+
+  <!-- User Info -->
+  <div class="user-info">
+    <h4 class="user-name">{{ user_name }}</h4>
+    <p class="user-phone">{{ user_phone }}</p>
+    <p class="user-email">{{ user_email }}</p>
+  </div>
+
+  <!-- Latest Request Progress -->
+  <div class="latest-requests shadow-animation-1">
+    <h4>Current Request Status</h4>
+
+    <div class="request-progress-wrapper">
+      <div class="progress-bar-container">
+        <div class="progress-track">
+          <div class="progress-step active">1</div>
+          <div class="progress-step {% if latest_request and latest_request.Status in ['Accepted', 'Completed'] or latest_request.report %}active{% endif %}">2</div>
+          <div class="progress-step {% if latest_request and latest_request.report %}active{% endif %}">3</div>
+        </div>
+        <div class="progress-labels">
+          <span>Request sent</span>
+          <span>In Process</span>
+          <span>Completed</span>
+        </div>
+      </div>
+
+      {% if latest_request %}
+        {% if latest_request.Status == "Rejected" %}
+          <p class="progress-status-text">
+            <span class="status rejected">Rejected</span><br>
+            Your request was rejected.
+          </p>
+        {% elif latest_request.report %}
+          <p class="progress-status-text">
+            <span class="status completed">Completed</span><br>
+            Report available on <a href="{{ url_for('requests_view') }}">Requests Page</a>.
+          </p>
+        {% elif latest_request.Status == "Accepted" %}
+          <p class="progress-status-text">
+            <span class="status accepted">Accepted</span><br>
+            Report will be uploaded soon.
+          </p>
+        {% else %}
+          <p class="progress-status-text">
+            <span class="status pending">Pending</span><br>
+            Your request is under review.
+          </p>
+        {% endif %}
+      {% else %}
+        <p class="status-hint no-data">No request details found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Infographics Section -->
+  <div class="sidebar-infographics">
+    
+
+    <!-- Requests This Month -->
+    <div class="infographic-card shadow-animation-1">
+      <div class="infographic-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#ff4d4d" viewBox="0 0 24 24" width="24" height="24">
+          <path d="M7 10h5v5H7z"/><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 14H5V9h14v9z"/>
+        </svg>
+      </div>
+      <div class="infographic-content">
+        <p class="infographic-label">Total Requests</p>
+        <p class="infographic-value">{{ user_total_requests or 0 }}</p>
+      </div>
+    </div>
+
+    <!-- Completed Requests -->
+    <div class="infographic-card shadow-animation-1">
+      <div class="infographic-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#4caf50" viewBox="0 0 24 24" width="24" height="24">
+          <path d="M20.285 6.709l-11.39 11.39-5.657-5.657 1.414-1.414 4.243 4.243 9.976-9.976z"/>
+        </svg>
+      </div>
+      <div class="infographic-content">
+        <p class="infographic-label">Completed Requests</p>
+        <p class="infographic-value">{{  user_completed_requests or 0 }}</p>
+      </div>
+    </div>
+
+    <!-- Pending Requests -->
+    <div class="infographic-card shadow-animation-1">
+      <div class="infographic-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#ff9800" viewBox="0 0 24 24" width="24" height="24">
+          <path d="M6 2v6h12V2h-2v4H8V2H6zm0 20v-6h12v6h-2v-4H8v4H6zm1-7h10v2H7v-2z"/>
+        </svg>
+      </div>
+      <div class="infographic-content">
+        <p class="infographic-label">Pending Requests</p>
+        <p class="infographic-value">{{ user_pending_requests or 0 }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Button -->
+  <a href="/logout" class="logout-btn" title="Logout">
+    <button class="Btn" aria-label="Logout">
+      <div class="sign">
+        <svg viewBox="0 0 512 512" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+        </svg>
+      </div>
+      <div class="text">Logout</div>
+    </button>
+  </a>
+</div>
+
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>

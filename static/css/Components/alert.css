@@ -1,0 +1,82 @@
+/* Alert container styling */
+.alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 90%;
+    margin: auto;
+    height: 65px;
+}
+
+/* Base alert styling */
+.alert {
+    padding: 17px 20px;
+    font-size: 1.2rem;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeInSlide 0.5s ease-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 520px;
+    height: 70px;
+
+}
+
+/* Alert categories */
+.alert.success {
+    background: rgba(255, 255, 255);
+    color: green;
+}
+.alert.error {
+    background: rgb(255, 255, 255);
+    color:rgb(219, 142, 0)
+}
+.alert.info {
+    background: rgba(255, 255, 255);
+}
+.alert.warning {
+    background: rgba(255, 255, 255);
+    color: orange;
+}
+
+.alert.danger{
+    background: rgba(255, 255, 255);
+    color: red;
+}
+
+/* Close button styling */
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #606060;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Fade-in and slide-down animation */
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .alert {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+        max-width: 100%;
+    }
+}

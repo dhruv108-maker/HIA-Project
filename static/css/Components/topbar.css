@@ -1,0 +1,174 @@
+/* Styling for the topbar */
+body.dark .topbar-menu li {
+  color: white;
+}
+
+.topbar {
+  background-color: #e1e1e1;
+  width: 104.2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 15px;
+  position: sticky;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 48px; /* Initial height */
+  overflow: hidden;
+  transition: max-height 0.5s ease, background-color 0.5s ease;
+  overflow-y: auto;
+  color: rgb(37, 37, 37);
+}
+
+/* Styling for the topbar menu */
+.topbar-menu {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 10px;
+  justify-content: space-around;
+  width: 100%;
+  background-color: #f3f3f3;
+  transition: 0.3s ease;
+}
+
+.topbar-menu li {
+  text-align: center;
+  width: 100%;
+  padding-bottom: 20px;
+  margin-top: -15px;
+  text-decoration: none;
+  transition: 0.3s ease;
+  color: rgb(31, 31, 31);
+}
+
+/* Styling for the dropdown buttons (headings) */
+.dropbtn {
+  color: rgb(31, 31, 31);
+  font-size: 14px;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 90%;
+  padding-top: 29px;
+  padding-bottom: 20px;
+}
+
+.dropbtn:hover {
+  background-color: #c9c9c9;
+  border-bottom: 1px solid rgba(248, 113, 113, 0.888);
+}
+
+/* Initially hidden dropdown content */
+.dropdown-menu {
+  display: none;
+  width: 100%;
+  background-color: transparent;
+  color: rgb(31, 31, 31);
+  padding: 0 20px;
+  box-sizing: border-box;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, max-height 0.5s ease-in-out;
+  margin-top: 3%;
+}
+
+/* Content inside dropdown */
+.dropdown-menu p {
+  margin: 0;
+  font-size: 14px;
+  padding: 10px 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.dropdown-menu p a {
+  color: rgb(31, 31, 31);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* Active dropdown state */
+.dropdown.active .dropdown-menu {
+  display: block;
+  opacity: 1;
+  max-height: 420px; /* Adjust based on content height */
+}
+
+/* Smooth height adjustment of topbar when dropdown is active */
+.topbar.active {
+  max-height: 380px; /* Adjust for expanded height */
+  transition: max-height 0.5s ease-in-out;
+}
+body {
+    margin-top: 60px; /* Prevent page content overlap with topbar */
+  }
+
+main{
+    margin-top: 60px; /* Default margin-top value */
+    transition: margin-top 0.5s ease; /* Smooth margin-top adjustment */
+}
+
+/* Styling for the topbar */
+.topbar {
+  background-color: #333;
+  width: 104.2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 50px; /* Initial height */
+  overflow: hidden;
+  transition: max-height 0.5s ease, background-color 0.5s ease;
+  overflow-y: auto;
+  color: rgb(31, 31, 31);
+}
+
+/* Styling for the topbar menu */
+body.dark .topbar-menu {
+  background-color: #1b2025;
+}
+
+body.dark .topbar-menu li {
+  color: rgb(226, 226, 226);
+}
+
+/* Styling for the dropdown buttons (headings) */
+body.dark .dropbtn {
+  color: rgb(226, 226, 226);
+  border-bottom: 0px solid rgba(231, 228, 228, 0.635);
+}
+
+body.dark .dropbtn:hover {
+  background-color: #272b33;
+  border-bottom: 1px solid rgba(231, 228, 228, 0.635);
+}
+
+/* Initially hidden dropdown content */
+body.dark .dropdown-menu {
+  color: rgb(221, 221, 221);
+
+}
+
+
+
+body.dark .dropdown-menu p a {
+  color: rgb(230, 230, 230);
+}
+
+
+
+
+@media only screen and (min-width: 1024px) and (max-width: 2080608090px){
+    .topbar{
+        display: none;
+    }
+}

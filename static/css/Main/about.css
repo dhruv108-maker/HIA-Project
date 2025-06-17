@@ -1,0 +1,357 @@
+
+
+/* Enable smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  height: 100vh;
+  overflow-y: scroll;
+  perspective: 1px;
+  transform-style: preserve-3d; 
+  background-image: url("/static/images/BG-1.png");
+  background-size: cover;  
+  background-position: center;
+  background-repeat: no-repeat;
+   
+  
+}
+
+main{  
+    height: max-content;
+  }
+
+.main-bg {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Reduce scroll speed */
+.slow-scroll {
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
+}
+
+  .main-bg h1 {
+    font-size: 3rem;
+    text-align: center;
+    color: #91e9b7; 
+
+  }
+
+  .about-app {
+    padding: 20px;
+    text-align: center;
+    height: 70vmax;
+    color:white;
+
+  }
+
+  .about-app h2 {
+    font-size: 2.3rem;
+    color: #64dd85; 
+    text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+
+  }
+
+  .about-app p {
+    max-width: 800px;
+    margin: 10px auto;
+    max-width: 60vw;
+    list-style: none;
+    text-align: justify;
+    text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  .institution{
+    height: 160vh;
+    color: white;
+    margin-top: 100px;
+  }
+
+  .institution img{
+    display: none;
+  }
+
+
+
+
+.columns{
+  display: flex;
+  flex-direction: row;
+}
+
+.columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Adjust spacing between columns */
+    text-align: left;
+    font-size: 18px;
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+}
+
+.column p {
+  margin-top: 20px;
+  width: 85%;
+  font-size: 24px;
+  text-align: justify;
+  text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);
+}
+
+.column h2 {
+  font-size: 2.5rem;
+  margin-top:100px;
+  font-weight: bold;
+  color: #f7bc69; 
+  text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.4);
+}
+
+.column li {
+  width: 85%;
+  font-size: 22px;
+  margin-left: 60px;
+  list-style: none; /* Remove default bullets */
+  position: relative;
+  margin-top: 20px;
+  text-align: justify;
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.column li::before {
+  content: "➢"; /* Unicode arrow character */
+  font-size: 24px;
+  color: #197ddb; /* Set color */
+  font-weight: bold;
+  position: absolute;
+  left: -30px; /* Adjust spacing */
+}
+
+/* #column-1{
+  border-right: 1px solid rgb(255, 170, 0);
+} */
+
+
+  #bg-img-1{
+    background-image: none;
+    background-size: cover;      
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bg-img-1 img{
+    position: absolute;
+}
+
+
+.column p {
+  margin-left: 60px;
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.institution-title{
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  background: #ffffff;
+  color: rgb(23, 87, 183);
+}
+
+.institution-title h1{
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+
+/* ========== Rotating Background Image ========== */
+.background-img {
+    position: absolute;
+    width: 40%;
+    height: auto;
+    z-index: -1;
+    animation: rotation 9s infinite linear;
+    transform: translate(-50%, -50%);
+}
+
+/* ========== Miscellaneous ========== */
+.tagline {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+  @media only screen and (min-width: 300px) and (max-width: 1024px){
+    *{
+      max-width: 100%;
+    }
+    body{
+      background-image: url("/static/images/BG-1-media.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    main{
+      background-size: contain;
+    }
+
+    .columns{
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .column h2 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    .column{
+      width: 100vw;
+    }
+
+    .column p {
+      margin-left: 0;
+      font-size: 12px;
+      min-width: 100%;
+      padding: 0px;
+      font-size: 16px;
+
+    }
+
+    .column li {
+      margin-left: 0;
+      font-size: 10px;
+      width: 100%;
+      padding: 0px;
+      text-align: justify;
+    }
+
+    .column h2{
+      margin-top: 50px;
+      font-size: 1.5rem;
+    }
+
+    .about-app{
+  
+      padding: 12px;
+    }
+
+    .institution{
+      height: max-content;
+      margin-top: 10px;
+    }
+
+    .institution img{
+      display: none;
+    }
+    
+    .institution-info{
+      padding: 12px;
+
+    }
+    .column p{
+      font-size: 16px;
+    }
+
+    .column li{
+      font-size: 16px;
+    }
+
+    #column-2{
+      margin-top: -70px;
+    }
+
+    #link{
+      text-align: center;
+      padding: 20px;
+    }
+
+
+    .institution-title{
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      margin-top: 300%;
+
+    }
+    .institution-title h1{
+      font-weight: bold;
+      font-size: 3rem;
+    }
+
+
+      /* Style for the background image */
+    .background-img {
+        position: absolute; /* Position the image relative to the .bg-img */
+        transform: translate(-50%, -50%); /* Adjust for the image's dimensions */
+        width: 100%; /* Full width of the container */
+        height: auto; /* Maintain aspect ratio */
+        z-index: -1; /* Send the image behind the text */
+        animation: rotation 7s infinite linear;
+    }
+
+    .headings img{
+        width: 75%;
+    }
+
+    .tagline{
+        display: block;
+        font-size: 1.3rem;
+        color: white;
+        font-weight: lighter;
+    }
+
+        .banner{
+        height: 40vh;
+        margin-bottom: 0px; 
+        margin-top: 30px;
+    }
+
+        .bg-img{
+        width: 100%;
+        height: 100vh;
+    }
+
+    #bg-img-1{
+        margin-top: -25%;
+        background-size: contain;      
+        background-position: center; 
+        background-repeat: no-repeat; 
+        height: 100vh;
+        background-image: url("/static/images/background_img_media.png");
+    }
+
+  }
+
+  

@@ -1,0 +1,171 @@
+/* === KEYFRAMES === */
+@-webkit-keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-webkit-keyframes drowpin-l {
+  0% { -webkit-transform: translateY(-20%); opacity: 0; }
+  100% { -webkit-transform: translateY(0); opacity: 1; }
+}
+@keyframes drowpin-l {
+  0% { transform: translateY(-20%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.loader-spinner {
+  -webkit-animation: drowpin-l 0.3s ease-out;
+  animation: drowpin-l 0.3s ease-out;
+}
+
+/* === LOADER WRAPPER === */
+.loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  background: linear-gradient(270deg, #a18cd1, #c2c3fb, #75c6df, #c8e6c9);
+  background-size: 800% 800%;
+  -webkit-animation: pastelShift 12s ease infinite;
+  animation: pastelShift 12s ease infinite;
+}
+
+@-webkit-keyframes pastelShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pastelShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === TEXT SLIDE IN === */
+@-webkit-keyframes slideFade {
+  from { opacity: 0; -webkit-transform: translateY(20px); }
+  to { opacity: 1; -webkit-transform: translateY(0); }
+}
+@keyframes slideFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loader-text-wrapper h1 {
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 2.3rem;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 2px;
+  font-weight: bolder;
+  opacity: 0;
+  -webkit-animation: slideFade 2s ease forwards;
+  animation: slideFade 2s ease forwards;
+}
+
+/* === UIVERSE BARS === */
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 100px;
+  margin-top: -100px;
+  margin-left: -100px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.loader--reflect {
+  margin-top: 20px;
+  opacity: 0.65 !important;
+}
+
+.loader--reflect:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -25%;
+  width: 150%;
+  height: 110%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0));
+}
+
+.bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 20px;
+  height: 100px;
+  border-radius: 0;
+  background-color: #475eb1;
+  transform: scaleY(0);
+  transform-style: preserve-3d;
+  -webkit-animation: bar 3s cubic-bezier(.81,.04,.4,.7) infinite;
+  animation: bar 3s cubic-bezier(.81,.04,.4,.7) infinite;
+}
+
+/* BAR COLOR + STAGGERED DELAYS */
+.bar:nth-child(2) { left: 20px; background-color: #264a63; animation-delay: 50ms; }
+.bar:nth-child(3) { left: 40px; background-color: #2d566f; animation-delay: 100ms; }
+.bar:nth-child(4) { left: 60px; background-color: #35617a; animation-delay: 150ms; }
+.bar:nth-child(5) { left: 80px; background-color: #3d6d86; animation-delay: 200ms; }
+.bar:nth-child(6) { left: 100px; background-color: #447892; animation-delay: 250ms; }
+.bar:nth-child(7) { left: 120px; background-color: #4c849e; animation-delay: 300ms; }
+.bar:nth-child(8) { left: 140px; background-color: #548fa9; animation-delay: 350ms; }
+.bar:nth-child(9) { left: 160px; background-color: #5c9bb5; animation-delay: 400ms; }
+.bar:nth-child(10) { left: 180px; background-color: #63a6c1; animation-delay: 450ms; }
+
+.loader--reflect .bar {
+  -webkit-animation-name: bar-reflect;
+  animation-name: bar-reflect;
+}
+
+/* === BAR KEYFRAMES === */
+@-webkit-keyframes bar {
+  0% { -webkit-transform: rotateZ(-180deg) rotateX(-360deg); }
+  75%, 100% { -webkit-transform: rotateZ(0) rotateX(0); }
+}
+@keyframes bar {
+  0% { transform: rotateZ(-180deg) rotateX(-360deg); }
+  75%, 100% { transform: rotateZ(0) rotateX(0); }
+}
+
+@-webkit-keyframes bar-reflect {
+  0% { -webkit-transform: rotateZ(180deg) rotateX(360deg); }
+  75%, 100% { -webkit-transform: rotateZ(0) rotateX(0); }
+}
+@keyframes bar-reflect {
+  0% { transform: rotateZ(180deg) rotateX(360deg); }
+  75%, 100% { transform: rotateZ(0) rotateX(0); }
+}
+
+/* === RESPONSIVE FIXES === */
+@media only screen and (max-width: 768px) {
+  .loader {
+    width: 160px;
+    height: 80px;
+    margin-left: -80px;
+  }
+  .bar {
+    width: 14px;
+    height: 80px;
+  }
+  .loader-text-wrapper h1 {
+    font-size: 1.6rem;
+    margin-top: 10px;
+  }
+}
+
+

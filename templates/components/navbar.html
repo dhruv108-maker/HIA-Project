@@ -1,0 +1,103 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Components/navbar.css') }}">
+<script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+
+<nav class="navbar" id='nav-bar'>
+    <a href="" id="dp-img" style="border-radius:50%; position:relative; display:flex; justify-content:center; align-items:center;">
+      <img src="{{ url_for('static', filename='images/dp.jpeg') }}" alt="Logo" style="position:absolute">
+    </a>
+    <a href="{{ url_for('home') }}" class="nav-link" id="home">Home</a>
+
+    {% if request.endpoint == 'home' %}
+      {% if not logged_in %}
+        <a href="{{ url_for('user_login') }}" id="login-toggle" class="nav-link">Login</a>
+      {% endif %}
+    {% endif %}
+
+    <a href="{{ url_for('about') }}" class="nav-link">About</a>
+
+    <a href="{{ url_for('requests_view') }}" class="nav-link">Requests</a>
+
+    {% if role_id == 1 -%}
+    <a href="{{ url_for('manager_dashboard') }}" class="nav-link">Dashboard</a>
+    {%- endif %}
+
+
+    {%if admin%}
+    <a href="{{ url_for('admin_login') }}" class="nav-link" >Admin</a>
+    {%endif%}
+
+    <a href="#" class="nav-link" id="toggleBtn"> Account</a>
+
+
+    <div class="nav-search-bar" id="search-bar">
+      <div class="ui-input-container">
+          <input
+            required=""
+            placeholder="Search project..."
+            class="ui-input"
+            type="text"
+            id="searchInput"
+          />
+          <div class="ui-input-underline"></div>
+          <div class="ui-input-highlight"></div>
+          <div class="ui-input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2"
+                stroke="currentColor"
+                d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+              ></path>
+            </svg>
+          </div>
+      </div>
+  </div>
+</nav>
+
+
+
+
+<nav id="topbar-r">
+  <div class="dp-img-r">
+    <a href="" id="dp-img" style="border-radius:50%; position:relative; display:flex; justify-content:center; align-items:center;">
+      <img src="{{ url_for('static', filename='images/dp.jpeg') }}" alt="Logo" style="position:absolute">
+    </a>
+  </div>
+  <div class="links">
+    <p>
+      <a class="topbar-link" id="topbar-link-toggle">
+      <img src="{{url_for('static', filename='images/menu_icon.svg')}}" class="topbar-toggle" alt="" srcset="" height="30px" width="30px" >
+      </a>
+    </p>
+
+    <p><a href="{{ url_for('home') }}" class="topbar-link">Home</a></p>
+    
+    <p>
+
+      {% if request.endpoint == 'home' %}
+
+        {% if not logged_in %}
+            <a href="{{ url_for('user_login') }}" id="login-toggle-r" class="topbar-link">Login</a>
+        {%else%}
+            <a id='toggleBtn-2' href="#" class="topbar-link">Account</a>
+        {% endif %}
+        
+      {% endif %}
+    </p>
+
+    <p><a href="{{ url_for('about') }}" class="topbar-link">About</a></p>
+
+    <p><a href="{{ url_for('requests_view') }}" class="topbar-link">Requests</a></p>
+
+    {%if role_id == 1%}
+    <p><a href="{{ url_for('manager_dashboard') }}" class="topbar-link">Dashboard</a></p>
+    {%endif%}
+
+  </div>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
