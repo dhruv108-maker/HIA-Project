@@ -19,7 +19,7 @@ def db_connection():
 # -------------------- Home --------------------
 @app.route('/')
 def home():
-    return render_template('views/index.html',
+    return render_template('views/index1.html',
                            user_name=session.get('username', 'Guest'),
                            user_phone=session.get('phone_no', ''),
                            user_email=session.get('email', ''),

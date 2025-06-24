@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.12/build/spline-viewer.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #070A18 0%, #0D1321 100%); 
+            color: #F0F4F8; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .gradient-main {
+            background: linear-gradient(90deg, #6A0DAD, #00CFFF); 
+        }
+        .gradient-text-hero {
+            background: linear-gradient(45deg, #00CFFF, #6A0DAD, #FF3CAC); 
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite alternate;
+        }
+        .section-heading {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            color: #FFFFFF; 
+            line-height: 1.2;
+            text-shadow: 0 0 15px rgba(106, 13, 173, 0.4); 
+        }
+        .card-bg {
+            background-color: rgba(20, 25, 40, 0.7); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 207, 255, 0.2); 
+        }
+
+        #hero-spline-container {
+            position: relative;
+            height: 100vh; 
+            width: 100vw;
+            min-height: 600px; 
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, rgba(7,10,24,0.95) 0%, rgba(7,10,24,0.6) 50%, rgba(7,10,24,0.95) 100%);
+        }
+        #bg-spline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none; 
+            transform: scale(1.1); 
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .animate-fade-in-down { animation: fadeInDown 1s ease-out forwards; }
+        .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards 0.8s; }
+        .animate-scale-in { animation: scaleIn 0.8s ease-out forwards 1.2s; }
+        .animate-floating { animation: floating 18s ease-in-out infinite alternate; }
+
+        #mobile-menu {
+            display: none; 
+        }
+        #mobile-menu.open {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background-color: rgba(7,10,24,0.95); 
+            position: absolute;
+            top: 100%;
+            left: 0;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body class="selection:bg-[#6A0DAD] selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[#21295C] bg-opacity-80 backdrop-filter backdrop-blur-lg shadow-xl">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <!-- Logo - Updated for Health Insight Agent -->
+            <a href="#" class="flex items-center space-x-3">
+                <div class="bg-gradient-to-br from-[#6A0DAD] to-[#00CFFF] rounded-full p-2 shadow-lg">
+                    <!-- Placeholder SVG for a modern health/AI icon -->
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <span class="text-white text-2xl font-bold font-outfit">HIA</span>
+            </a>
+
+            <!-- Navigation Links (Desktop) -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#hero-section" class="text-white hover:text-[#00CFFF] transition-colors duration-300 font-medium">Home</a>
+                <a href="#how-it-works" class="text-white hover:text-[#00CFFF] transition-colors duration-300 font-medium">How It Works</a>
+                <a href="#about-us" class="text-white hover:text-[#00CFFF] transition-colors duration-300 font-medium">About Us</a>
+                
+                <!-- Chatbot CTA -->
+                <a href="{{ url_for('chatbot') }} " class="gradient-main text-white px-7 py-2.5 rounded-full font-semibold shadow-lg hover:shadow-[#6A0DAD]/50 transform hover:-translate-y-1 transition duration-300">
+                    Start Chatting!
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu (Collapsed) -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2">
+            <a href="#hero-section" class="block text-white hover:text-[#00CFFF] transition-colors duration-300 font-medium px-3 py-2 rounded-md">Home</a>
+            <a href="#how-it-works" class="block text-white hover:text-[#00CFFF] transition-colors duration-300 font-medium px-3 py-2 rounded-md">How It Works</a>
+            <a href="#about-us" class="block text-white hover:text-[#00CFFF] transition-colors duration-300 font-medium px-3 py-2 rounded-md">About Us</a>
+            <a href="{{ url_for('chatbot') }}" class="block gradient-main text-white px-7 py-2.5 rounded-full font-semibold shadow-lg transform hover:-translate-y-1 transition duration-300 text-center mt-4">
+                Start Chatting!
+            </a>
+        </div>
+    </nav>
+
+    <main>
+        {% block Loader %}
+        {% include 'components/re-loader.html' %}
+        {% endblock %}
+        
+        {% block flaskMessage %}
+        {% include 'components/flash.html' %}
+        {% endblock %}
+
+        {% block Sidebar %}
+        {% include 'components/sidebar.html' %}
+        {% endblock %}
+
+        <!-- Hero Section - The Chatbot Gateway -->
+        <section id="hero-section" class="hero-container">
+            <spline-viewer url="https://prod.spline.design/W7PwAH5yL8WmunjS/scene.splinecode" id="bg-spline"></spline-viewer>
+
+            <div class="relative z-10 p-4 md:p-8 max-w-4xl mx-auto text-center">
+                <div class="h-[10rem] md:h-[15rem] lg:h-[20rem] flex items-center justify-center">
+                </div>
+                
+                <a href="{{ url_for('chatbot') }}" class="gradient-main text-white px-8 py-3 rounded-full font-semibold text-xl shadow-2xl hover:shadow-[#6A0DAD]/50 transform hover:-translate-y-1 transition duration-300 animate-scale-in">
+                    Start Chatting Now!
+                </a>
+            </div>
+        </section>
+
+        <!-- Value Proposition Sections -->
+        <section id="how-it-works" class="py-20 px-4 md:px-8 bg-gradient-to-b from-[#0D1321] to-[#1A253A]">
+            <h2 class="section-heading text-white">How Your Insight Agent Works</h2>
+            <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Card 1: AI-Powered Answers -->
+                <div class="card-bg p-8 rounded-2xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-500">
+                    <div class="p-4 rounded-full gradient-main mb-6 shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 10v2a7 7 0 0014 0v-2M12 19V5"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-3 font-outfit">AI-Powered Answers</h3>
+                    <p class="text-[#F0F4F8] leading-relaxed">
+                        Leverage cutting-edge AI for accurate, evidence-based responses to your health questions.
+                    </p>
+                </div>
+                <!-- Card 2: Personalized Recommendations -->
+                <div class="card-bg p-8 rounded-2xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-500">
+                    <div class="p-4 rounded-full gradient-main mb-6 shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.747 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-3 font-outfit">Personalized Recommendations</h3>
+                    <p class="text-[#F0F4F8] leading-relaxed">
+                        Receive tailored advice for your unique health profile, from nutrition to mindfulness.
+                    </p>
+                </div>
+                <!-- Card 3: Data-Driven Progress -->
+                <div class="card-bg p-8 rounded-2xl shadow-xl flex flex-col items-center text-center transform hover:scale-105 transition duration-500">
+                    <div class="p-4 rounded-full gradient-main mb-6 shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-3 font-outfit">Data-Driven Progress</h3>
+                    <p class="text-[#F0F4F8] leading-relaxed">
+                        Track your health journey and see how small changes lead to big results over time.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 px-4 md:px-8 bg-gradient-to-b from-[#1A253A] to-[#252E42]">
+            <h2 class="section-heading text-white">What Our Users Say</h2>
+            <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial Card 1 -->
+                <div class="card-bg p-6 rounded-2xl shadow-xl transform hover:scale-105 transition duration-500">
+                    <p class="text-[#F0F4F8] text-lg italic mb-4">"The Health Insight Agent has truly transformed how I approach my wellness. The personalized advice is spot-on!"</p>
+                    <p class="text-white font-semibold">- Jane Doe, Fitness Enthusiast</p>
+                </div>
+                <!-- Testimonial Card 2 -->
+                <div class="card-bg p-6 rounded-2xl shadow-xl transform hover:scale-105 transition duration-500">
+                    <p class="text-[#F0F4F8] text-lg italic mb-4">"I love the chatbot! It's like having a personal health coach available 24/7. So convenient and insightful."</p>
+                    <p class="text-white font-semibold">- John Smith, Busy Professional</p>
+                </div>
+                <!-- Testimonial Card 3 -->
+                <div class="card-bg p-6 rounded-2xl shadow-xl transform hover:scale-105 transition duration-500">
+                    <p class="text-[#F0F4F8] text-lg italic mb-4">"The data tracking and progress reports keep me motivated. Highly recommend this platform for anyone serious about health."</p>
+                    <p class="text-white font-semibold">- Sarah Lee, Health Conscious</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about-us" class="py-20 px-4 md:px-8 bg-gradient-to-b from-[#252E42] to-[#323D5B]">
+            <h2 class="section-heading text-white">About Health Insight Agent</h2>
+            <div class="container mx-auto max-w-3xl text-center">
+                <p class="text-[#F0F4F8] text-lg mb-8 leading-relaxed">
+                    Health Insight Agent is a pioneering platform dedicated to transforming personal wellness through the power of artificial intelligence. We provide you with cutting-edge tools to understand, manage, and proactively improve your health based on personalized, data-driven insights. Our mission is to make advanced health intelligence accessible, empowering individuals to take control of their well-being with confidence and clarity.
+                </p>
+                <a href="/about-page" class="gradient-main text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-[#6A0DAD]/50 transform hover:-translate-y-1 transition duration-300">
+                    Learn More About Us
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#070A18] text-gray-400 py-10 px-4 md:px-8">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2025 Health Insight Agent. All rights reserved. Developed in collaboration with GSFC University.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="#" class="hover:text-[#00CFFF] transition-colors duration-300">Privacy Policy</a>
+                <a href="#" class="hover:text-[#00CFFF] transition-colors duration-300">Terms of Service</a>
+                <a href="#" class="hover:text-[#00CFFF] transition-colors duration-300">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Scroll Animations -->
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+            document.getElementById('mobile-menu').classList.toggle('open');
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+                document.getElementById('mobile-menu').classList.remove('open');
+            });
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Basic scroll animation for sections
+        document.addEventListener("DOMContentLoaded", () => {
+            const sections = document.querySelectorAll('section:not(#hero-section)');
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                section.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700', 'ease-out');
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
