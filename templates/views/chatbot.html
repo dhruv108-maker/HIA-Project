@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HIA – Health Insight AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Main/chatbot.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Sidebar Toggle Always Visible -->
+  <button id="toggle-sidebar" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+
+  <div class="app-wrapper">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h1>HIA</h1>
+        <p>Health Insight AI</p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/"><i class="fas fa-home"></i> Home</a>
+        <a href="/about"><i class="fas fa-circle-info"></i> About</a>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="chat-section">
+      <header class="chat-header">
+        <h2><img  src="{{ url_for('static', filename='images/logo-hia.png') }}" alt=""> HIA</h2>
+      </header>
+
+      <div id="chat-box" class="chat-box">
+        <div class="message bot">
+          <div class="avatar bot"><i class="fas fa-robot"></i></div>
+          <div class="bubble">
+            <p>Hello! I'm HIA – your health assistant. How can I help you today?</p>
+            <span class="time">Now</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="chat-form" class="chat-form">
+        <input type="text" id="user-input" placeholder="Type a health-related question..." required>
+        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("toggle-sidebar").addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("collapsed");
+    });
+
+    document.getElementById("chat-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const input = document.getElementById("user-input");
+      const chatBox = document.getElementById("chat-box");
+      const userText = input.value.trim();
+      if (!userText) return;
+
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      chatBox.innerHTML += `
+        <div class="message user">
+          <div class="bubble user">
+            <p>${userText}</p>
+            <span class="time">${time}</span>
+          </div>
+        </div>
+      `;
+      input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      const res = await fetch("/send_message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userText })
+      });
+
+      const data = await res.json();
+
+      chatBox.innerHTML += `
+        <div class="message bot">
+          <div class="avatar bot"><i class="fas fa-robot"></i></div>
+          <div class="bubble">
+            <p>${data.reply}</p>
+            <span class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+        </div>
+      `;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
+</body>
+</html>

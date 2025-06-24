@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login | LABS</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Main/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Components/loader.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+    <header>
+        {% block flaskMessage %}
+        {% include 'components/flash.html' %}
+        {% endblock %}
+    </header>
+    <main>
+        <div id="login-section">
+            {% block userLogin %}
+            {% include 'components/loginform.html' %}
+            {% endblock %}
+        </div>
+
+        <div id="signin-section" style="display:none;">
+            {% block userSignin %}
+            {% include 'components/user_signin.html' %}
+            {% endblock %}
+        </div>
+    </main>
+</body>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/loader.js') }}"></script>
+</html>

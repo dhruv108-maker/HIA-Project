@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Main/login.css') }}">
+<div class="form-box">
+<div class="form-container" id="signin-form">
+    <div class="profile-img floating">
+                <img src="{{ url_for('static', filename='images/profile.png') }}" alt="profile-img" class="profile-img-img">
+    </div>
+    <form id="register-form" action="/register_user" method="POST">
+        <div class="form-group">
+            <label for="first_name">First name</label>
+            <input type="text" id="first_name" name="first_name" placeholder="Enter your First Name" minlength="3" maxlength="20" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Enter your Last Name" minlength="3" maxlength="20" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone_no">Phone Number</label>
+            <input type="tel" id="phone_no" name="phone_no" placeholder="Enter your Phone Number" pattern="[0-9]{10}" required>
+            <small>Please 10 digits only</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your Email ID" required>
+            <span id="emailError" style="color:red; display:none;">Invalid email address.</span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="phone_no">Enrollment No</label>
+            <input type="text" id="ern" name="ern" placeholder="If you're enrolled to University">
+        </div>
+    
+    
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your Password" minlength="8" required>
+            <span class="toggle-password" onclick="togglePasswordVisibility()">
+                <img src="{{ url_for('static', filename='images/interface/show.png') }}" alt="Show Password" id="toggle-icon">
+            </span>
+            <small>Password must be at least 8 characters</small>
+        </div>
+    
+        <button type="submit" class="submit-btn">Sign up</button>
+    </form>
+    <div class="login-toggle-btn">
+        <p>Already have an account? <a href="javascript:void(0);" onclick="toggleForms()">Login</a></p>
+    </div>
+</div>
+<div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#email").on("input", function() {
+            var email = $(this).val();
+    
+            if (email.includes("@gmail.com") || email.endsWith("@gsfcuniversity.ac.in")) {
+                $.ajax({
+                    url: "/check_email",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ email: email }),
+                    success: function(response) {
+                        if (response.valid) {
+                            $("#emailError").hide();
+                        } else {
+                            $("#emailError").text(response.message).show();
+                        }
+                    },
+                    error: function() {
+                        $("#emailError").text("Error checking email").show();
+                    }
+                });
+            }
+        });
+    });
+    
+</script>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const icon = document.getElementById("toggle-icon");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.src = "{{ url_for('static', filename='images/interface/hide.png') }}";
+            icon.alt = "Hide Password";
+        } else {
+            passwordInput.type = "password";
+            icon.src = "{{ url_for('static', filename='images/interface/show.png') }}";
+            icon.alt = "Show Password";
+        }
+    }
+</script>
+
