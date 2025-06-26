@@ -134,30 +134,10 @@ def logout():
 # -------------------- Chatbot Page --------------------
 @app.route('/chatbot')
 def chatbot():
-    user_id = session.get('UserID')
-    chats = []
-
-    if user_id:
-        try:
-            conn = db_connection()
-            cursor = conn.cursor()
-            cursor.execute("""
-                SELECT query, response, timestamp 
-                FROM chats 
-                WHERE user_id = ? 
-                ORDER BY timestamp DESC
-            """, (user_id,))
-            chats = cursor.fetchall()
-            conn.close()
-        except Exception as e:
-            print("⚠️ Chat fetch error:", e)
-
-    return render_template("views/chatbot.html",
-                           user_name=session.get('username', 'Guest'),
+    return render_template("views/chatbot.html", user_name=session.get('username', 'Guest'),
                            user_phone=session.get('phone_no', ''),
                            user_email=session.get('email', ''),
-                           latest_request={'Status': "Accepted", 'report': None},
-                           chat_history=chats)
+                           latest_request={'Status': "Accepted", 'report': None})
 
 
 
@@ -165,13 +145,10 @@ def chatbot():
 @app.route("/send_message", methods=["POST"])
 def send_message():
     user_message = request.json.get("message")
-    user_id = session.get("UserID")
-
-    if not user_message or not user_id:
-        return jsonify({"reply": "Message or user session missing."})
+    if not user_message:
+        return jsonify({"reply": "I didn't receive any message."})
 
     try:
-        # Get response from Cohere
         response = co.generate(
             model="command",
             prompt=f"User: {user_message}\nBot:",
@@ -179,17 +156,6 @@ def send_message():
             temperature=0.7
         )
         bot_reply = response.generations[0].text.strip()
-
-        # Store the chat in the DB
-        conn = db_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO chats (user_id, query, response) 
-            VALUES (?, ?, ?)
-        """, (user_id, user_message, bot_reply))
-        conn.commit()
-        conn.close()
-
         return jsonify({"reply": bot_reply})
 
     except Exception as e:

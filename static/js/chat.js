@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message })
     });
+
     const data = await response.json();
     const botTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
