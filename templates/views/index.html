@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | HIA - Health Insight AI</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Main/index_main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Animations/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Components/alert.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Components/loader.css') }}">
+</head>
+<body>
+    
+    <!-- Loader -->
+    {% block Loader %}
+    {% include 'components/re-loader.html' %}
+    {% endblock %}
+
+    <header>
+        <!-- Flash Messages -->
+        {% block flaskMessage %}
+        {% include 'components/flash.html' %}
+        {% endblock %}
+
+        <!-- Navigation Bar -->
+        {% block navbar %}
+        {% include 'components/navbar.html' %}
+        {% endblock %}
+    </header>
+    
+    <main>
+
+        {% block Sidebar %}
+        {% include 'components/sidebar.html' %}
+        {% endblock %}
+
+        <!-- Hero Section -->
+        <section id="section-1">
+            <div id="web-title">
+                <h1>HIA<span> - Health Insight AI</span>
+                    <p id="sub-web-title">AI-Powered Healthcare Assistance</p>
+                </h1>
+            </div>
+
+            <div class="section-1-floating-component floating" id="section-1-floating-component-1"></div>
+            <div class="section-1-floating-component floating" id="section-1-floating-component-2"></div>
+            <div class="section-1-floating-component floating" id="section-1-floating-component-3"></div>
+
+            <div id="toggle-1" class="fade-in">
+                <p>Your personalized AI health assistant is here to help.</p>
+                
+                <a href="{{ url_for('chatbot') }}" class="fade-in creative-hover" id="btn-booking">Chat with HIA</a>
+
+                <ul id="booking-instructions" class="fade-in">
+                    <li> Ask health-related questions any time.</li>
+                    <li> Get instant AI-powered insights and suggestions.</li>
+                    <li> Private, secure, and easy to use.</li>
+                    <li> Backed by Cohere’s large language model.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- About HIA Section -->
+        <section id="section-2" class="fade-in">
+            <div class="titles">
+                <h2 id="title-username">{{ user_name if user_name else 'Welcome to HIA' }}</h2>
+                <h2 class="animated-title">
+                    <span class="highlight-text">AI That Understands Your Health</span>
+                    <span class="gradient-text">Reliable, Fast, and Secure</span>
+                </h2>
+            </div>
+
+            <section class="lab-section fade-in">
+                <div class="lab-image fade-in">
+                    <img class="floating" src="{{ url_for('static', filename='images/doctor_assist.png') }}" alt="HIA Assistant">
+                </div>
+                <div class="lab-section-text fade-in">
+                    <h2>Meet HIA</h2>
+                    <p>HIA is designed to guide you with general health questions, symptoms, and wellness support using state-of-the-art AI.</p>
+                    <a class="explore-btn creative-hover" href="{{ url_for('chatbot') }}">Start Chat</a>
+                </div>
+            </section>
+        </section>
+
+    </main>
+
+    {% block footer %}
+    {% include 'components/footer.html' %}
+    {% endblock %}
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const elements = document.querySelectorAll(".fade-in");
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add("visible");
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

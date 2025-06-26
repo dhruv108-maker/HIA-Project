@@ -21,8 +21,17 @@
       </div>
       <nav class="sidebar-nav">
         <a href="/"><i class="fas fa-home"></i> Home</a>
-        <a href="/about"><i class="fas fa-circle-info"></i> About</a>
         <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <!-- Sidebar -->
+          <h2>Your Questions</h2>
+          <ul class="chat-history-list">
+              {% for chat in chat_history %}
+                  <li class="chat-history-item" title="{{ chat[0] }}">{{ chat[0] }}</li>
+              {% else %}
+                  <li class="chat-history-empty">No previous chats found.</li>
+              {% endfor %}
+          </ul>
+
       </nav>
     </aside>
 
@@ -90,5 +99,34 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     });
   </script>
+
+
+  <script>
+const chatForm = document.querySelector("#chat-form");
+const userInput = document.querySelector("#user-input");
+const chatBox = document.querySelector("#chat-box");
+
+chatForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    // Show user message
+    chatBox.innerHTML += `<div class="user-msg"><strong>You:</strong> ${message}</div>`;
+
+    // Send to backend
+    const res = await fetch("/send_message", {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ message })
+    });
+
+    const data = await res.json();
+    chatBox.innerHTML += `<div class="bot-msg"><strong>HIA:</strong> ${data.reply}</div>`;
+    userInput.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+</script>
+
 </body>
 </html>
