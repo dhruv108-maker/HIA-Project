@@ -21,9 +21,17 @@
       </div>
       <nav class="sidebar-nav">
         <a href="/"><i class="fas fa-home"></i> Home</a>
-        <a href="/about"><i class="fas fa-circle-info"></i> About</a>
         <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
       </nav>
+      <div class="sidebar-queries">
+        <ul>
+          {%if chat_history %}
+            {% for query, response, timestamp in chat_history %}
+              <li title="{{ response|e }}">{{ query }}</li>
+            {% endfor %}
+          {%endif%}
+        </ul>
+      </div>
     </aside>
 
     <main class="chat-section">
@@ -32,63 +40,158 @@
         <div class="message bot">
           <div class="avatar bot"><i class="fas fa-robot"></i></div>
           <div class="bubble">
-            <p>Hello! I'm HIA – your health assistant. How can I help you today?</p>
-            <span class="time">Now</span>
+            <p>Response text...</p>
+            <span class="time">now</span>
           </div>
         </div>
-      </div>
 
-      <form id="chat-form" class="chat-form">
-        <input type="text" id="user-input" placeholder="Type a health-related question..." required>
-        <button type="submit"><i class="fas fa-paper-plane"></i></button>
-      </form>
+      </div>
+      
+      <div id="file-preview" class="file-preview" style="display: none;"></div>
+
+<form id="chat-form" class="chat-form" enctype="multipart/form-data">
+  <label class="file-label">
+    <i class="fas fa-paperclip"></i>
+    <input type="file" id="pdf-file" name="file" accept=".pdf, .csv" hidden>
+  </label>
+
+  <!-- ⬇ Preview Area -->
+  <div id="file-preview" class="file-preview-container" style="display: none;"></div>
+
+  <input type="text" id="user-input" name="message" placeholder="Type your message or upload a PDF..." required>
+
+  <button type="submit"><i class="fas fa-arrow-right"></i></button>
+
+
+</form>
+
+
     </main>
   </div>
 
   <script>
-    document.getElementById("toggle-sidebar").addEventListener("click", () => {
-      document.getElementById("sidebar").classList.toggle("collapsed");
-    });
+document.getElementById("toggle-sidebar").addEventListener("click", () => {
+  const sidebar = document.getElementById("sidebar");
+  const chatSection = document.querySelector(".chat-section");
 
-    document.getElementById("chat-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const input = document.getElementById("user-input");
-      const chatBox = document.getElementById("chat-box");
-      const userText = input.value.trim();
-      if (!userText) return;
+  sidebar.classList.toggle("collapsed");
 
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  if (sidebar.classList.contains("collapsed")) {
+    chatSection.style.marginLeft = "0";
+  } else {
+    chatSection.style.marginLeft = "20%";
+  }
+});
 
-      chatBox.innerHTML += `
-        <div class="message user">
-          <div class="bubble user">
-            <p>${userText}</p>
-            <span class="time">${time}</span>
-          </div>
-        </div>
-      `;
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
 
-      const res = await fetch("/send_message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userText })
-      });
-
-      const data = await res.json();
-
-      chatBox.innerHTML += `
-        <div class="message bot">
-          <div class="avatar bot"><i class="fas fa-robot"></i></div>
-          <div class="bubble">
-            <p>${data.reply}</p>
-            <span class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-          </div>
-        </div>
-      `;
-      chatBox.scrollTop = chatBox.scrollHeight;
-    });
+    
   </script>
+
+<script>
+document.getElementById("chat-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const input = document.getElementById("user-input");
+  const fileInput = document.getElementById("pdf-file");
+  const chatBox = document.getElementById("chat-box");
+
+  const userText = input.value.trim();
+  const file = fileInput.files[0];
+  if (!userText && !file) return;
+
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  // Determine user message display
+  let userMessageDisplay = userText;
+  if (!userText && file) {
+    userMessageDisplay = `[📄 Uploaded File: ${file.name}]`;
+  } else if (userText && file) {
+    userMessageDisplay += `\n📄 + ${file.name}`;
+  }
+
+  // Show user message in chat
+  chatBox.innerHTML += `
+    <div class="message user">
+      <div class="bubble user">
+        <p>${userMessageDisplay}</p>
+        <span class="time">${time}</span>
+      </div>
+    </div>
+  `;
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // Send form data
+  const formData = new FormData();
+  formData.append("message", userText);
+  if (file) formData.append("file", file);
+
+  try {
+    const res = await fetch("/send_message", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    // Show bot response
+    chatBox.innerHTML += `
+      <div class="message bot">
+        <div class="avatar bot"><i class="fas fa-robot"></i></div>
+        <div class="bubble">
+          <p>${data.reply}</p>
+          <span class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+      </div>
+    `;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+  } catch (error) {
+    console.error("❌ Chat error:", error);
+    chatBox.innerHTML += `
+      <div class="message bot">
+        <div class="avatar bot"><i class="fas fa-robot"></i></div>
+        <div class="bubble">
+          <p>Sorry, something went wrong while sending your message.</p>
+          <span class="time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+      </div>
+    `;
+  }
+  // Reset input
+  input.value = "";
+  fileInput.value = "";
+});
+</script>
+
+
+<script>
+const fileInput = document.getElementById("pdf-file");
+const filePreview = document.getElementById("file-preview");
+
+fileInput.addEventListener("change", function () {
+  const file = fileInput.files[0];
+
+  if (file) {
+    const fileName = file.name;
+
+    filePreview.innerHTML = `
+      <div class="pdf-preview-chip">
+        <i class="fas fa-file-pdf"></i>
+        <span class="name">${fileName}</span>
+        <button type="button" class="remove-file" title="Remove file">&times;</button>
+      </div>
+    `;
+    filePreview.style.display = "flex";
+
+    document.querySelector(".remove-file").onclick = () => {
+      fileInput.value = "";
+      filePreview.style.display = "none";
+    };
+  }
+});
+
+</script>
+
+
 </body>
 </html>
